@@ -242,12 +242,14 @@ export function useConnectionMonitor(
 
   // Cleanup on unmount
   useEffect(() => {
+    const pendingRequests = pendingRequestsRef.current
     return () => {
       mountedRef.current = false
       if (healthCheckTimerRef.current) {
         clearInterval(healthCheckTimerRef.current)
       }
-      pendingRequestsRef.current.clear()
+      // Clear all pending requests on unmount
+      pendingRequests.clear()
     }
   }, [])
 
@@ -259,5 +261,3 @@ export function useConnectionMonitor(
     reset,
   }
 }
-
-export * from './types'

@@ -1,4 +1,4 @@
-import { renderHook, act, waitFor } from '@testing-library/react-hooks'
+import { renderHook, act } from '@testing-library/react-hooks'
 import type { Connector, Provider } from '@web3-react/types'
 import { useConnectionMonitor } from './index'
 
@@ -95,7 +95,7 @@ describe('useConnectionMonitor', () => {
 
     // Wait for initial health check
     await act(async () => {
-      await jest.advanceTimersByTimeAsync(100)
+      jest.advanceTimersByTime(100)
     })
 
     expect(result.current.isHealthy).toBe(true)
@@ -115,7 +115,7 @@ describe('useConnectionMonitor', () => {
 
     // Wait for initial check to complete
     await act(async () => {
-      await jest.advanceTimersByTimeAsync(100)
+      jest.advanceTimersByTime(100)
     })
 
     // Make provider fail
@@ -123,7 +123,7 @@ describe('useConnectionMonitor', () => {
 
     // Trigger next health check
     await act(async () => {
-      await jest.advanceTimersByTimeAsync(5000)
+      jest.advanceTimersByTime(5000)
     })
 
     expect(result.current.isHealthy).toBe(false)
@@ -143,13 +143,13 @@ describe('useConnectionMonitor', () => {
 
     // Initial check
     await act(async () => {
-      await jest.advanceTimersByTimeAsync(100)
+      jest.advanceTimersByTime(100)
     })
 
     // Make provider fail
     mockProvider.setShouldFail(true)
     await act(async () => {
-      await jest.advanceTimersByTimeAsync(5000)
+      jest.advanceTimersByTime(5000)
     })
 
     expect(result.current.isHealthy).toBe(false)
@@ -157,7 +157,7 @@ describe('useConnectionMonitor', () => {
     // Recover provider
     mockProvider.setShouldFail(false)
     await act(async () => {
-      await jest.advanceTimersByTimeAsync(5000)
+      jest.advanceTimersByTime(5000)
     })
 
     expect(result.current.isHealthy).toBe(true)
@@ -178,7 +178,7 @@ describe('useConnectionMonitor', () => {
     )
 
     await act(async () => {
-      await jest.advanceTimersByTimeAsync(2000)
+      jest.advanceTimersByTime(2000)
     })
 
     expect(result.current.isHealthy).toBe(false)
@@ -195,7 +195,7 @@ describe('useConnectionMonitor', () => {
 
     // Initial check
     await act(async () => {
-      await jest.advanceTimersByTimeAsync(100)
+      jest.advanceTimersByTime(100)
     })
 
     // Make provider fail
@@ -203,13 +203,13 @@ describe('useConnectionMonitor', () => {
     
     // First failure - should trigger reconnect after 2s
     await act(async () => {
-      await jest.advanceTimersByTimeAsync(5000)
+      jest.advanceTimersByTime(5000)
     })
     expect(result.current.consecutiveFailures).toBe(1)
 
     // Wait for reconnect attempt (2s backoff)
     await act(async () => {
-      await jest.advanceTimersByTimeAsync(2000)
+      jest.advanceTimersByTime(2000)
     })
     
     expect(mockConnector.connectEagerlyCalled).toBe(true)
@@ -225,7 +225,7 @@ describe('useConnectionMonitor', () => {
     // Make it fail
     mockProvider.setShouldFail(true)
     await act(async () => {
-      await jest.advanceTimersByTimeAsync(5100)
+      jest.advanceTimersByTime(5100)
     })
 
     expect(result.current.consecutiveFailures).toBe(1)
@@ -278,9 +278,9 @@ describe('useConnectionMonitor', () => {
 
     // Trigger multiple concurrent health checks
     await act(async () => {
-      await jest.advanceTimersByTimeAsync(100)
-      await jest.advanceTimersByTimeAsync(100)
-      await jest.advanceTimersByTimeAsync(100)
+      jest.advanceTimersByTime(100)
+      jest.advanceTimersByTime(100)
+      jest.advanceTimersByTime(100)
     })
 
     // Should only make one request despite multiple checks

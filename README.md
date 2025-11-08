@@ -43,7 +43,7 @@ In addition to compiling each package in watch mode, this will also spin up [/ex
 
 ## Publish
 
-- `yarn lerna publish [--dist-tag] `
+- `yarn lerna publish [--dist-tag]`
 
 ## Documentation
 

@@ -1,4 +1,4 @@
-import type detectEthereumProvider from '@metamask/detect-provider'
+import detectEthereumProvider from '@metamask/detect-provider'
 import type {
   Actions,
   AddEthereumChainParameter,
@@ -60,8 +60,8 @@ export class MetaMask extends Connector {
   private async isomorphicInitialize(): Promise<void> {
     if (this.eagerConnection) return
 
-    return (this.eagerConnection = import('@metamask/detect-provider').then(async (m) => {
-      const provider = await m.default(this.options)
+    return (this.eagerConnection = Promise.resolve().then(async () => {
+      const provider = await detectEthereumProvider(this.options)
       if (provider) {
         this.provider = provider as MetaMaskProvider
 

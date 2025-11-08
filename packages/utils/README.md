@@ -9,12 +9,14 @@ This package provides standardized utilities to fix critical bugs across web3-re
 #### 1. **Inconsistent ChainId Parsing** (CRITICAL BUG)
 
 **Problem**: Different connectors parsed chainId differently:
+
 - WalletConnect v1: `parseInt(chainId)` without base parameter → `parseInt("0x1")` = `NaN`
 - Others: `parseInt(chainId, 16)` → Correct parsing
 
 **Impact**: WalletConnect connections would fail with NaN chainId, breaking the entire app.
 
 **Fix**: `parseChainId()` function handles all cases consistently:
+
 ```typescript
 parseChainId("0x1")  // ✅ Returns 1
 parseChainId("0x89") // ✅ Returns 137  
@@ -29,6 +31,7 @@ parseChainId("invalid") // ❌ Throws descriptive error
 **Impact**: `undefined` account values caused silent failures.
 
 **Fix**: `validateAccounts()` and `getFirstAccount()` functions:
+
 ```typescript
 validateAccounts([])  // ❌ Throws before accessing [0]
 getFirstAccount([])   // ✅ Returns undefined safely
@@ -41,6 +44,7 @@ getFirstAccount([])   // ✅ Returns undefined safely
 **Impact**: Cascading failures throughout the app.
 
 **Fix**: Comprehensive validation in `parseChainId()`:
+
 - Checks for NaN
 - Validates positive integer
 - Enforces MAX_SAFE_CHAIN_ID limit

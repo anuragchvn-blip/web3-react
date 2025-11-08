@@ -48,11 +48,13 @@ function MyComponent() {
 ### `useConnectionMonitor(connector, provider, options)`
 
 **Parameters:**
+
 - `connector`: The web3-react connector to monitor
 - `provider`: The provider instance (optional, will use connector.provider if not provided)
 - `options`: Configuration options
 
 **Options:**
+
 - `checkInterval` (number): Milliseconds between health checks (default: 30000)
 - `timeout` (number): Health check timeout in milliseconds (default: 5000)
 - `maxRetries` (number): Maximum automatic reconnection attempts (default: 3)
@@ -62,6 +64,7 @@ function MyComponent() {
 - `onError` (callback): Called on health check errors
 
 **Returns:**
+
 - `isHealthy` (boolean): Current connection health status
 - `lastChecked` (Date | null): Timestamp of last health check
 - `consecutiveFailures` (number): Count of consecutive failed checks
