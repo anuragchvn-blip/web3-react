@@ -37,7 +37,7 @@ export class RequestQueue {
   private queue: QueuedRequest[] = []
   private isProcessing = false
   private pendingRequests = new Map<string, Promise<unknown>>()
-  
+
   // Track active critical requests to prevent concurrent execution
   private activeCriticalRequest: QueuedRequest | null = null
 
@@ -74,7 +74,7 @@ export class RequestQueue {
     if (CRITICAL_METHODS.has(args.method)) {
       return 100
     }
-    
+
     // Read operations get medium priority
     if (args.method.startsWith('eth_get') || args.method.startsWith('eth_call')) {
       return 50
@@ -140,7 +140,7 @@ export class RequestQueue {
       // If there's an active critical request and this is also critical, wait
       if (this.isCritical(request.args) && this.activeCriticalRequest) {
         // Wait a bit before checking again
-        await new Promise(resolve => setTimeout(resolve, 100))
+        await new Promise((resolve) => setTimeout(resolve, 100))
         continue
       }
 
@@ -189,7 +189,7 @@ export class RequestQueue {
       }
 
       // Small delay between requests to prevent overwhelming the provider
-      await new Promise(resolve => setTimeout(resolve, 10))
+      await new Promise((resolve) => setTimeout(resolve, 10))
     }
 
     this.isProcessing = false
@@ -200,7 +200,7 @@ export class RequestQueue {
    */
   public clear(reason?: string): void {
     const error = new Error(reason || 'Request queue cleared')
-    
+
     // Reject all queued requests
     while (this.queue.length > 0) {
       const request = this.queue.shift()
@@ -211,7 +211,7 @@ export class RequestQueue {
 
     // Clear pending deduplicated requests
     this.pendingRequests.clear()
-    
+
     // Reset state
     this.activeCriticalRequest = null
     this.isProcessing = false

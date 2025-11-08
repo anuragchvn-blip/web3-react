@@ -1,11 +1,11 @@
 /**
  * CRITICAL FIX: Standardized chainId parsing to prevent bugs across connectors
- * 
+ *
  * ISSUES FIXED:
  * 1. WalletConnect v1 was parsing without base parameter: parseInt("0x1") = NaN
  * 2. Some connectors handle number vs string differently
  * 3. No validation for invalid chainId values (NaN, negative, too large)
- * 
+ *
  * This utility ensures ALL connectors parse chainId consistently and safely.
  */
 
@@ -19,11 +19,11 @@ export const MAX_SAFE_CHAIN_ID = 4503599627370476
 
 /**
  * Safely parse a chainId from string or number format
- * 
+ *
  * @param chainId - The chainId as a hex string (e.g., "0x1") or number
  * @returns The chainId as a safe integer
  * @throws Error if chainId is invalid, NaN, negative, or exceeds MAX_SAFE_CHAIN_ID
- * 
+ *
  * @example
  * parseChainId("0x1") // returns 1
  * parseChainId("0x89") // returns 137
@@ -70,9 +70,9 @@ export function parseChainId(chainId: string | number): number {
 
 /**
  * Validate that an accounts array is not empty
- * 
+ *
  * CRITICAL FIX: Prevents accessing accounts[0] when array is empty
- * 
+ *
  * @param accounts - Array of account addresses
  * @returns The same array if valid
  * @throws Error if accounts is undefined, not an array, or empty
@@ -91,7 +91,7 @@ export function validateAccounts(accounts: unknown): string[] {
 
 /**
  * Safely get the first account from accounts array
- * 
+ *
  * @param accounts - Array of accounts (may be undefined or empty)
  * @returns The first account or undefined
  */
@@ -101,10 +101,10 @@ export function getFirstAccount(accounts: string[] | undefined): string | undefi
 
 /**
  * Format chainId to hex string for RPC calls
- * 
+ *
  * @param chainId - The chainId as a number
  * @returns The chainId as a hex string with 0x prefix
- * 
+ *
  * @example
  * formatChainIdToHex(1) // returns "0x1"
  * formatChainIdToHex(137) // returns "0x89"
@@ -139,7 +139,7 @@ export const KNOWN_CHAINS: Record<number, { name: string; nativeCurrency: string
 
 /**
  * Check if a chainId is a known/supported chain
- * 
+ *
  * @param chainId - The chainId to check
  * @returns true if the chain is in the known chains list
  */
@@ -149,7 +149,7 @@ export function isKnownChain(chainId: number): boolean {
 
 /**
  * Get chain information
- * 
+ *
  * @param chainId - The chainId to get info for
  * @returns Chain info or undefined if unknown
  */

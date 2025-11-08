@@ -198,7 +198,13 @@ export class MetaMask extends Connector {
   /** {@inheritdoc Connector.deactivate} */
   public deactivate(): void {
     // Remove all event listeners to prevent memory leaks
-    if (this.provider && this.connectListener && this.disconnectListener && this.chainChangedListener && this.accountsChangedListener) {
+    if (
+      this.provider &&
+      this.connectListener &&
+      this.disconnectListener &&
+      this.chainChangedListener &&
+      this.accountsChangedListener
+    ) {
       this.provider.removeListener('connect', this.connectListener)
       this.provider.removeListener('disconnect', this.disconnectListener)
       this.provider.removeListener('chainChanged', this.chainChangedListener)

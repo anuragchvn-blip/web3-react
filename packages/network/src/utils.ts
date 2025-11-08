@@ -42,7 +42,7 @@ export async function getBestProvider(providers: JsonRpcProvider[], timeout = 50
           errors[i] = new Error(`Provider ${i} connection timeout after ${timeout}ms`)
           rejectPromise(errors[i])
         }, timeout)
-        
+
         timeouts.push(timeoutId)
       })
 
@@ -59,7 +59,7 @@ export async function getBestProvider(providers: JsonRpcProvider[], timeout = 50
           // if this is the last call and we haven't resolved yet - do so
           if (Object.keys(successes).length === providers.length) {
             const index = Object.keys(successes).findIndex((j) => successes[Number(j)])
-            
+
             // If all providers failed, reject with detailed error information
             if (index === -1) {
               cleanup()
@@ -68,7 +68,7 @@ export async function getBestProvider(providers: JsonRpcProvider[], timeout = 50
                 .join('; ')
               return reject(new Error(`All providers failed. Errors: ${errorMessages}`))
             }
-            
+
             // no need to set resolved to true, as this is the last promise
             cleanup()
             return resolve(providers[index])

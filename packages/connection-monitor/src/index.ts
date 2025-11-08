@@ -48,15 +48,7 @@ export function useConnectionMonitor(
   provider?: Provider,
   options: ConnectionMonitorOptions = {}
 ): ConnectionMonitorState {
-  const {
-    checkInterval = 30000,
-    timeout = 5000,
-    maxRetries = 3,
-    enabled = true,
-    onStale,
-    onRecover,
-    onError,
-  } = options
+  const { checkInterval = 30000, timeout = 5000, maxRetries = 3, enabled = true, onStale, onRecover, onError } = options
 
   const [isHealthy, setIsHealthy] = useState(true)
   const [lastChecked, setLastChecked] = useState<Date | null>(null)
@@ -126,10 +118,7 @@ export function useConnectionMonitor(
       })
 
       // Race between health check and timeout
-      await Promise.race([
-        deduplicatedRequest(providerInstance, 'eth_chainId'),
-        timeoutPromise,
-      ])
+      await Promise.race([deduplicatedRequest(providerInstance, 'eth_chainId'), timeoutPromise])
 
       return true
     } catch (error) {
@@ -191,7 +180,7 @@ export function useConnectionMonitor(
     }
 
     const healthy = await performHealthCheck()
-    
+
     if (!mountedRef.current) {
       return
     }
@@ -218,7 +207,7 @@ export function useConnectionMonitor(
       if (newFailureCount <= maxRetries && !isReconnectingRef.current) {
         // Exponential backoff: 2s, 4s, 8s
         const backoffDelay = Math.min(1000 * Math.pow(2, newFailureCount), 8000)
-        
+
         setTimeout(() => {
           if (mountedRef.current) {
             void reconnect()
